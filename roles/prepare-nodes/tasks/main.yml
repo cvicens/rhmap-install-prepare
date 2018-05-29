@@ -1,0 +1,26 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+
+# Activate subscription-manager  
+- name: Check subscription status on all nodes
+  shell: subscription-manager status
+  register: subs
+  ignore_errors: yes
+- set_fact:
+    subs_status={{ true if (subs.stdout | search("Current")) else false }}
+- name: Subscribe nodes
+  shell: subscription-manager register --username="{{ rhn_username }}" --password="{{ rhn_password }}"
+  when: subs_status|bool == false
+
+# Attach RHM POOL ID
+- name: Get Red Hat Mobile pool ID
+  shell: subscription-manager list --available --matches=*Mobile* --pool-only | head -1 -
+  register: rhmap_pool_id
+  run_once: true
+  
+- name: Attach pool ID ( "{{ rhmap_pool_id.stdout }}" ) on all hosts
+  shell: subscription-manager attach --pool="{{ rhmap_pool_id.stdout }}"
+
+# Refresh certificates
+- name: Refresh certificates
+  shell: subscription-manager refresh

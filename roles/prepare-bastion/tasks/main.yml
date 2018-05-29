@@ -1,0 +1,39 @@
+---
+# This playbook contains common plays that will be run on the bastion node.
+
+# Enable RHM repo & install templates
+- name: Enable Red Hat Mobile repos
+  shell: subscription-manager repos --enable="{{ rhmap_repo }}"
+
+- name: Install templates & playbooks on bastion
+  yum:  
+    name: "rhmap-fh-openshift-templates"
+    state: latest
+
+# Prepare RHMAP inventory file
+- name: Setup ansible inventory for RHMAP
+  template:
+    src: rhmap_hosts.j2
+    dest: /etc/ansible/hosts_rhmap
+    mode: 0640
+
+# Seed RHM docker images to nodes
+- block:
+  - name: Seed rhmap core docker images to nodes
+    shell: ANSIBLE_ROLES_PATH=/opt/rhmap/"{{ rhmap_version }}"/rhmap-installer/roles/ ansible-playbook -i /etc/ansible/hosts_rhmap /opt/rhmap/"{{ rhmap_version }}"/rhmap-installer/playbooks/seed-images.yml -e "project_type=core" -e "rhmap_version='{{ rhmap_version }}'" > /tmp/rhmap-seed-core.out 2>&1
+    async: 5400
+    poll: 30
+    register: seed_core
+
+  - fail: msg="Failed to seed core images to nodes. Check log output /tmp/rhmap-seed-core.out"
+    when: seed_core.rc is undefined or seed_core.rc != 0
+
+- block:
+  - name: Seed rhmap mbaas docker images to nodes
+    shell: ANSIBLE_ROLES_PATH=/opt/rhmap/"{{ rhmap_version }}"/rhmap-installer/roles/ ansible-playbook -i /etc/ansible/hosts_rhmap /opt/rhmap/"{{ rhmap_version }}"/rhmap-installer/playbooks/seed-images.yml -e "project_type=mbaas" -e "rhmap_version='{{ rhmap_version }}'" > /tmp/rhmap-seed-mbaas 2>&1
+    async: 5400
+    poll: 30
+    register: seed_mbaas
+
+  - fail: msg="Failed to seed mbaas images to nodes. Check log output /tmp/rhmap-seed-mbaas.out"
+    when: seed_mbaas.rc is undefined or seed_mbaas.rc != 0

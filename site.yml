@@ -1,0 +1,17 @@
+---
+# This playbook deploys RHMAP
+
+- name: prepare infrastructure (nodes)
+  hosts: all
+  remote_user: root
+
+  roles:
+    - prepare-nodes
+
+- name: prepare infrastructure (bastion)
+  hosts: bastion
+  remote_user: root
+
+  roles:
+    - prepare-bastion
+
