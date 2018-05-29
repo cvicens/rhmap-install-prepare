@@ -8,47 +8,47 @@ rhmap_version: "4.6"
 rhmap_repo: "rhel-7-server-rhmap-4.6-rpms"
 
 # Ansible related
-ansible_ssh_user=root
-ansible_sudo=true
+ansible_ssh_user: root
+ansible_sudo: true
 
 # Valid targets enterprise or dedicated
-target=enterprise
+target: enterprise
 
 # Cluster hostname
-cluster_hostname=
+cluster_hostname:
 
 # Customer subdomain name
-domain_name=rhmap
+domain_name: rhmap
 
 # OpenShift Credentials
-oc_user=
-oc_password=
-#oc_oauth_token=
+oc_user:
+oc_password:
+#oc_oauth_token:
 
 # The address and port of the OpenShift API server
-login_url=https://{{ cluster_hostname }}:8443
+login_url: https://{{ cluster_hostname }}:8443
 
 # Low level vars
-skip_tls=true
-kubeconfig="/etc/origin/master/admin.kubeconfig"
+skip_tls: true
+kubeconfig: "/etc/origin/master/admin.kubeconfig"
 
 # Add values here if a HTTP proxy server is to be used
-#proxy_host=myproxy
-#proxy_port=8080
-#proxy_user=
-#proxy_pass=
+#proxy_host: myproxy
+#proxy_port: 8080
+#proxy_user: 
+#proxy_pass:
 
 # Optional (default value is 'http'), uncomment to change protocol to https - buildfarm only
-# proxy_protocol="https"
+# proxy_protocol: "https"
 
 # For proxy_url the syntax should be: http://<proxy-host>:<proxy-port> or http://<proxy_user>:<proxy_pass>@<proxy-host>:<proxy-port>
-#proxy_url=""
+#proxy_url: ""
 
 # URL to be checked to test outbound HTTP connection. Must be whitelisted if using a HTTP Proxy server
 url_to_check="https://www.npmjs.com"
 
 #### Gluster config - Set if using Gluster FS for storage
-gluster_storage= false
+gluster_storage: false
 
 ########################################################################
 # Custom variables
