@@ -45,12 +45,11 @@ kubeconfig: "/etc/origin/master/admin.kubeconfig"
 #proxy_url: ""
 
 # URL to be checked to test outbound HTTP connection. Must be whitelisted if using a HTTP Proxy server
-url_to_check="https://www.npmjs.com"
+url_to_check: "https://www.npmjs.com"
 
-#### Gluster config - Set if using Gluster FS for storage
+# Gluster config - Set if using Gluster FS for storage
 gluster_storage: false
 
-########################################################################
 # Custom variables
 
 # Required PVs
