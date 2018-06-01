@@ -20,6 +20,10 @@
   register: five_output
   become: yes
 
+- debug:
+    msg: "Check for 5Gi {{ twenty_five_output }}"
+
+
 - fail:
     msg: "Less than the required number of 5Gi PVs are available, please add more 5Gi PVs to your cluster"
   when: five_output.stdout_lines | length  <  required_5_pv | int
@@ -28,6 +32,9 @@
   shell: oc get pv  --config={{ kubeconfig | default('/etc/origin/master/admin.kubeconfig') }} | awk '/Available/ && /1Gi/'
   register: one_output
   become: yes
+
+- debug:
+    msg: "Check for 1Gi {{ twenty_five_output }}"
 
 - fail:
     msg: "Less than the required number of 1Gi PVs are available, please add more 1Gi PVs to your cluster"

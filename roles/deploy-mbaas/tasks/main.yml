@@ -4,7 +4,7 @@
 # Deploy MBaaS
 - block:
   - name: Deploy Red Hat Mobile MBaaS
-    shell: 'ANSIBLE_ROLES_PATH=/opt/rhmap/"{{ rhmap_version}}"/rhmap-installer/roles/ ansible-playbook -i /etc/ansible/hosts_rhmap 
+    shell: 'ANSIBLE_ROLES_PATH=/opt/rhmap/{{ rhmap_version}}/rhmap-installer/roles/ ansible-playbook -i /etc/ansible/hosts_rhmap 
     /opt/rhmap/{{ rhmap_version }}/rhmap-installer/playbooks/1-node-mbaas.yml -e "strict_mode=false" --skip-tags "label" > /tmp/rhmap-deploy-mbaas.out 2>&1'
     async: 5400
     poll: 30
