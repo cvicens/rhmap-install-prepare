@@ -2,6 +2,7 @@
 
 if [ "$#" -ne 4 ]; then
     echo "$0 <NFS_SERVER> <NFS_DIR> <PV_SIZE> <PV_QUANTITY>"
+    exit 0
 fi
 
 NFS_SERVER=$1
