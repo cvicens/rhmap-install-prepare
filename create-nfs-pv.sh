@@ -14,7 +14,7 @@ echo "${NFS_SERVER} ${PV_SIZE} ${PV_QUANTITY}"
 
 for (( i=1; i<=${PV_QUANTITY}; i++ ))
 do
-PV_NAME="rhm_pv_${PV_SIZE}_$i"
+PV_NAME="rhm-pv-${PV_SIZE}-$i"
 cat << EOF > ./dyn1-pv-create.yaml
 apiVersion: v1
 kind: PersistentVolume
