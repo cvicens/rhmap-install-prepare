@@ -9,7 +9,7 @@
   become: yes
 
 - debug:
-  msg: "Check for 25Gi {{ twenty_five_output }}"
+    msg: "Check for 25Gi {{ twenty_five_output }}"
 
 - fail:
     msg: "Less than the required number of 25Gi PVs are available, please add more 25Gi PVs to your cluster"
