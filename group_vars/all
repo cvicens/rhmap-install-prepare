@@ -4,12 +4,16 @@
 rhn_username: "test"
 rhn_password: "password"
 
+rhn_pool_ids:
+- DUMMY_POOL_ID
+
 rhmap_version: "4.6"
 rhmap_repo: "rhel-7-server-rhmap-4.6-rpms"
 
 # Ansible related
-ansible_ssh_user: root
+ansible_ssh_user: ec2-user
 ansible_sudo: true
+ansible_ssh_private_key_file: /path/to/ssh/key/server1.pem
 
 # Valid targets enterprise or dedicated
 target: enterprise

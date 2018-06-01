@@ -1,7 +1,11 @@
 [nodes:children]
+bastion
 master
 core
 mbaas
+
+[bastion]
+localhost
 
 [master]
 master1.oslo1.internal

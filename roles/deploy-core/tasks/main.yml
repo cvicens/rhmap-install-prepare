@@ -1,0 +1,14 @@
+---
+# This playbook contains common plays that will be run on the bastion node.
+
+# Deploy Core
+- block:
+  - name: Deploy Red Hat Mobile Core
+    shell: 'ANSIBLE_ROLES_PATH=/opt/rhmap/"{{ rhmap_version}}"/rhmap-installer/roles/ ansible-playbook -i /etc/ansible/hosts_rhmap 
+    /opt/rhmap/{{ rhmap_version }}/rhmap-installer/playbooks/core.yml -e "strict_mode=false" > /tmp/rhmap-deploy-core.out 2>&1'
+    async: 5400
+    poll: 30
+    register: install_core
+
+  - fail: msg="Failed to install RHMAP Core. Check log output /tmp/rhmap-deploy-core.out"
+    when: install_core.rc is undefined or install_core.rc != 0

@@ -28,16 +28,27 @@ oc_password={{ oc_password }}
 kubeconfig={{ kubeconfig }}
 
 # Add values here if a HTTP proxy server is to be used
+{% if proxy_host is defined %}
 proxy_host={{ proxy_host }}
+{% endif %}
+{% if proxy_port is defined %}
 proxy_port={{ proxy_port }}
+{% endif %}
+{% if proxy_user is defined %}
 proxy_user={{ proxy_username }}
+{% endif %}
+{% if proxy_pass is defined %}
 proxy_pass={{ proxy_password }}
-
+{% endif %}
 # Optional (default value is 'http'), uncomment to change protocol to https - buildfarm only
+{% if proxy_protocol is defined %}
 proxy_protocol={{ proxy_protocol }}
+{% endif %}
 
 # For proxy_url the syntax should be: http://<proxy-host>:<proxy-port> or http://<proxy_user>:<proxy_pass>@<proxy-host>:<proxy-port>
+{% if proxy_url is defined %}
 proxy_url={{ proxy_url }}
+{% endif %}
 
 # URL to be checked to test outbound HTTP connection. Must be whitelisted if using a HTTP Proxy server
 url_to_check={{ url_to_check }}
@@ -50,10 +61,16 @@ monitoring= {{ monitoring }}
 frontend= {{ frontend }}
 
 [master]
-{{ master }}
+{% for host in groups['master'] %}
+{{ hostvars[host]['inventory_hostname'] }} 
+{% endfor %}
 
 [mbaas]
-{{ mbaas }}
+{% for host in groups['mbaas'] %}
+{{ hostvars[host]['inventory_hostname'] }} 
+{% endfor %}
 
 [core]
-{{ core }}
+{% for host in groups['core'] %}
+{{ hostvars[host]['inventory_hostname'] }} 
+{% endfor %}

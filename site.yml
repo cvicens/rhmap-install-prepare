@@ -1,17 +1,33 @@
 ---
 # This playbook deploys RHMAP
 
-- name: prepare infrastructure (nodes)
+- name: prepare infrastructure (all nodes)
   hosts: all
   remote_user: root
 
   roles:
     - prepare-nodes
 
-- name: prepare infrastructure (bastion)
+- name: prepare infrastructure (bastion node)
   hosts: bastion
   remote_user: root
 
   roles:
     - prepare-bastion
+
+- name: check PVs infrastructure (master node)
+  hosts: master[0]
+  remote_user: root
+
+  roles:
+    - check-pvs
+
+- name: deploy RHMAP (bastion node)
+  hosts: bastion
+  remote_user: root
+
+  roles:
+    - deploy-core
+    - deploy-mbaas
+
 
