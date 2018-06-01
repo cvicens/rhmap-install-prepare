@@ -2,30 +2,33 @@
 # This playbook contains common plays that will be run on the one master node.
 
 # Check PVs
-- block:
-  - name: "Check for 25Gi Persistent Volume"
-    shell: oc get pv --config={{ kubeconfig | default('/etc/origin/master/admin.kubeconfig') }} | awk '/Available/ && /25Gi/'
-    register: twenty_five_output
-    become: yes
 
-  - fail:
-      msg: "Less than the required number of 25Gi PVs are available, please add more 25Gi PVs to your cluster"
-    when: twenty_five_output.stdout_lines | length  <  required_25_pv | int
+- name: "Check for 25Gi Persistent Volume"
+  shell: oc get pv --config={{ kubeconfig | default('/etc/origin/master/admin.kubeconfig') }} | awk '/Available/ && /25Gi/'
+  register: twenty_five_output
+  become: yes
 
-  - name: "Check for 5Gi Persistent Volume"
-    shell: oc get pv --config={{ kubeconfig | default('/etc/origin/master/admin.kubeconfig') }} | awk '/Available/ && /5Gi/'
-    register: five_output
-    become: yes
+- debug:
+  msg: "Check for 25Gi {{ twenty_five_output }}"
 
-  - fail:
-      msg: "Less than the required number of 5Gi PVs are available, please add more 5Gi PVs to your cluster"
-    when: five_output.stdout_lines | length  <  required_5_pv | int
+- fail:
+    msg: "Less than the required number of 25Gi PVs are available, please add more 25Gi PVs to your cluster"
+  when: twenty_five_output.stdout_lines | length  <  required_25_pv | int
 
-  - name: "Check for 1Gi Persistent Volume"
-    shell: oc get pv  --config={{ kubeconfig | default('/etc/origin/master/admin.kubeconfig') }} | awk '/Available/ && /1Gi/'
-    register: one_output
-    become: yes
-    
-  - fail:
-      msg: "Less than the required number of 1Gi PVs are available, please add more 1Gi PVs to your cluster"
-    when: one_output.stdout_lines | length  <  required_1_pv | int
+- name: "Check for 5Gi Persistent Volume"
+  shell: oc get pv --config={{ kubeconfig | default('/etc/origin/master/admin.kubeconfig') }} | awk '/Available/ && /5Gi/'
+  register: five_output
+  become: yes
+
+- fail:
+    msg: "Less than the required number of 5Gi PVs are available, please add more 5Gi PVs to your cluster"
+  when: five_output.stdout_lines | length  <  required_5_pv | int
+
+- name: "Check for 1Gi Persistent Volume"
+  shell: oc get pv  --config={{ kubeconfig | default('/etc/origin/master/admin.kubeconfig') }} | awk '/Available/ && /1Gi/'
+  register: one_output
+  become: yes
+
+- fail:
+    msg: "Less than the required number of 1Gi PVs are available, please add more 1Gi PVs to your cluster"
+  when: one_output.stdout_lines | length  <  required_1_pv | int
