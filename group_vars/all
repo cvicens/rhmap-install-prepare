@@ -61,6 +61,14 @@ required_25_pv: 3
 required_5_pv: 3
 required_1_pv: 2
 
+core:
+  project_name: "rhmap-core"
+  schedule_to_key: ""
+  schedule_to_value: ""
+  mongo_pvc_size: "50Gi"
+  mysql_pvc_size: "5Gi"
+  scm_pvc_size: "25Gi"
+
 monitoring:
   smtp_server: "localhost"
   smtp_username: "username"
