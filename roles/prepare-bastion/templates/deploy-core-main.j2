@@ -25,15 +25,3 @@ frontend:
   git_external_protocol: "{{ frontend.git_external_protocol | default('https') }}"
   builder_android_service_host: "{{ frontend.builder_android_service_host | default('https://androidbuild.feedhenry.com') }}"
   builder_ios_service_host: "{{ frontend.builder_ios_service_host | default('https://iosbuild.feedhenry.com') }}"
-
-
-
----
-
-core:
-  project_name: "rhmap-core"
-  schedule_to_key: ""
-  schedule_to_value: ""
-  mongo_pvc_size: "50Gi"
-  mysql_pvc_size: "5Gi"
-  scm_pvc_size: "25Gi"
