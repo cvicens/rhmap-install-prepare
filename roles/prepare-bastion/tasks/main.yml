@@ -23,6 +23,13 @@
     mode: 0640
   become: yes
 
+- name: Setup ansible variables for RHMAP CORE
+  template:
+    src: deploy-core-main.j2
+    dest: /opt/rhmap/{{ rhmap_version }}/rhmap-installer/roles/deploy-core/defaults/main.yml
+    mode: 0640
+  become: yes
+
 - name: "Install python-docker-py via yum"
   yum:
     name: python-docker-py

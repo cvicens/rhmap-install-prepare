@@ -56,26 +56,6 @@ url_to_check={{ url_to_check }}
 #### Gluster config - Set if using Gluster FS for storage
 gluster_storage={{ gluster_storage }}
 
-# Custom variables
-monitoring:
-  smtp_server: "{{ monitoring.smtp_server }}"
-  smtp_username: "{{ monitoring.smtp_username }}"
-  smtp_password: "{{ monitoring.smtp_password }}"
-  smtp_from_address: "{{ monitoring.smtp_from_address }}"
-  rhmap_admin_email: "{{ monitoring.rhmap_admin_email }}"
-
-frontend:
-  smtp_server: "{{ frontend.smtp_server }}"
-  smtp_username: "{{ frontend.smtp_server }}"
-  smtp_password: "{{ frontend.smtp_server }}"
-  smtp_port: "{{ frontend.smtp_server }}"
-  smtp_auth: "{{ frontend.smtp_server }}"
-  smtp_tls: "{{ frontend.smtp_server }}"
-  email_replyto: "{{ frontend.smtp_server }}"
-  git_external_protocol: "{{ frontend.smtp_server }}"
-  builder_android_service_host: "{{ frontend.smtp_server }}"
-  builder_iphone_service_host: "{{ frontend.smtp_server }}"
-
 [master]
 {% for host in groups['master'] %}
 {{ hostvars[host]['inventory_hostname'] }} 
