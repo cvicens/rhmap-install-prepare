@@ -1,0 +1,11 @@
+---
+# This playbook contains common plays that will be run on all core nodes.
+
+# Label nodes
+
+- name: "Label core nodes"
+  shell: oc label node {{ item }} type=core
+  register: result
+  failed_when: ( stdout.find("error") == 1 )
+  with_items: "{{ groups['core'] }}"
+  become: yes

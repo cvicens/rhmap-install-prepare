@@ -1,41 +1,28 @@
-Building a simple LAMP stack and deploying Application using Ansible Playbooks.
--------------------------------------------
 
-These playbooks require Ansible 1.2.
+# Prepare NFS
 
-These playbooks are meant to be a reference and starter's guide to building
-Ansible Playbooks. These playbooks were tested on CentOS 6.x so we recommend
-that you use CentOS or RHEL to test these modules.
+As root or using sudo
 
-This LAMP stack can be on a single node or multiple nodes. The inventory file
-'hosts' defines the nodes in which the stacks should be configured.
-
-        [webservers]
-        localhost
-
-        [dbservers]
-        bensible
-
-Here the webserver would be configured on the local host and the dbserver on a
-server called "bensible". The stack can be deployed using the following
-command:
-
-        ansible-playbook -i hosts site.yml
-
-Once done, you can check the results by browsing to http://localhost/index.php.
-You should see a simple test page and a list of databases retrieved from the
-database server.
+mkdir /srv/nfs/rhm
+chown -R nfsnobody:nfsnobody /srv/nfs/rhm
+chmod -R uga+rwx /srv/nfs/rhm
 
 
-# Configuring a Proxy Whitelist
-If you are using a proxy, add the following to the proxy whitelist:
+# Define NFS export
+vi /etc/exports.d/ocp-workshop-oslo2.exports
 
-* The wildcard DNS entry for your OpenShift Router, for example *example.example.net
-* If you are using the hosted Build Farm, add the domain, for example, *.*.redhatmobile.com
-* api-ssl.bitly.com
-* github.com
-* registry.npmjs.org
-* fcm.googleapis.com
-* db3.notify.windows.com
-* gcm-http.googleapis.com
-* subscription.rhn.redhat.com
+Add:
+
+```
+/srv/nfs/rhm *(rw,root_squash,no_wdelay,sync)
+```
+
+# Restart NFS
+
+systemctl restart nfs-server
+
+```
+# exportfs 
+/srv/nfs/user-vols      <world>
+/srv/nfs/rhm  	        <world>
+```

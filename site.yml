@@ -15,6 +15,20 @@
   roles:
     - prepare-bastion
 
+- name: prepare core nodes (core node)
+  hosts: core
+  remote_user: root
+
+  roles:
+    - prepare-core-nodes
+
+- name: prepare mbaas nodes (core mbaas)
+  hosts: mbaas
+  remote_user: root
+
+  roles:
+    - prepare-mbaas-nodes
+
 - name: check PVs infrastructure (master node)
   hosts: master[0]
   remote_user: root

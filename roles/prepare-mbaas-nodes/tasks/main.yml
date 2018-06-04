@@ -1,0 +1,11 @@
+---
+# This playbook contains common plays that will be run on all mbaas nodes.
+
+# Label nodes
+
+- name: "Label mbaas nodes"
+  shell: oc label node {{ item }} type=mbaas
+  register: result
+  failed_when: ( stdout.find("error") == 1 )
+  with_items: "{{ groups['mbaas'] }}"
+  become: yes
