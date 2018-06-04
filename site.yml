@@ -16,14 +16,14 @@
     - prepare-bastion
 
 - name: prepare core nodes (core node)
-  hosts: core
+  hosts: bastion
   remote_user: root
 
   roles:
     - prepare-core-nodes
 
 - name: prepare mbaas nodes (core mbaas)
-  hosts: mbaas
+  hosts: bastion
   remote_user: root
 
   roles:
