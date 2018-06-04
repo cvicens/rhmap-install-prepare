@@ -6,6 +6,6 @@
 - name: "Label core nodes"
   shell: oc label node {{ item }} type=core
   register: result
-  failed_when: ( stdout.find("error") == 1 )
+  failed_when: ( result.stdout.find("error") == 1 )
   with_items: "{{ groups['core'] }}"
   become: yes
