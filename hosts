@@ -22,3 +22,6 @@ node1.oslo1.internal
 #node3.oslo1.internal
 #node4.oslo1.internal
 
+[nfs]
+support1.oslo1.internal
+

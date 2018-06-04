@@ -15,6 +15,7 @@ echo "${NFS_SERVER} ${PV_SIZE} ${PV_QUANTITY}"
 for (( i=1; i<=${PV_QUANTITY}; i++ ))
 do
 PV_NAME="rhm-pv-${PV_SIZE}-$i"
+ansible -i hosts ${NFS_SERVER} nfs -m shell -a"mkdir -p ${NFS_DIR}/${PV_NAME}"
 cat << EOF > ./dyn1-pv-create.yaml
 apiVersion: v1
 kind: PersistentVolume
@@ -32,4 +33,7 @@ spec:
    readOnly: false
 EOF
 oc create -f ./dyn1-pv-create.yaml
+
+
+
 done
