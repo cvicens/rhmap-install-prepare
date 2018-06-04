@@ -1,14 +1,75 @@
-# Custom variables
+---
+
 mbaas:
-  project_name: "{{ mbaas.project_name | default('rhmap-mbaas') }}"
+  mongo_config_name: "{{ mbaas.mongo_config_name | default('mongo-config') }}"
+  project_name: "{{ mbaas.project_name | default("rhmap-{{ mongo_replicas }}-node-mbaas") }}"
   schedule_to_key: "{{ mbaas.schedule_to_key | default('') }}"
   schedule_to_value: "{{ mbaas.schedule_to_value | default('') }}"
   mongo_pvc_size: "{{ mbaas.mongo_pvc_size | default('50Gi') }}"
-  mongo_config_name: "{{ mbaas.mongo_config_name | default('mongo-config') }}"
-
+  
 monitoring:
   smtp_server: "{{ monitoring.smtp_server | default('localhost') }}"
   smtp_username: "{{ monitoring.smtp_username | default('username') }}"
   smtp_password: "{{ monitoring.smtp_password | default('password') }}"
   smtp_from_address: "{{ monitoring.smtp_from_address | default('nagios@example.com') }}"
   rhmap_admin_email: "{{ monitoring.rhmap_admin_email | default('root@localhost') }}"
+
+
+#Required only for poc.yml Playbook
+mbaas_target_id: "poc-mbaas"
+
+#Relevant only for 3 node MBaaS
+use_node_selector: false #defaults to using Pod anti-affinity rules which requires oscp 3.6 +
+node_selector_keys: ["mbaas_id", "mbaas_id", "mbaas_id"] # only applies when use_node_selector is set to true
+node_selector_values: ["mbaas1", "mbaas2", "mbaas3" ] # only applies when use_node_selector is set to true
+
+
+quota: {
+  "configmaps": 3,
+  "limits.cpu": 10,
+  "limits.memory": "10Gi",
+  "persistentvolumeclaims": 4,
+  "pods": 20,
+  "replicationcontrollers": 8,
+  "requests.cpu": 3,
+  "requests.memory": "3500Mi",
+  "secrets": 12,
+  "services": 9
+}
+
+limitrange: [
+  {
+    "type": "Pod",
+    "max": {
+      "cpu": "1",
+      "memory": "1Gi"
+    },
+    "min": {
+      "cpu": "200m",
+      "memory": "200Mi"
+    }
+  },
+  {
+    "type": "Container",
+    "max": {
+      "cpu": "1",
+      "memory": "1Gi"
+    },
+    "min": {
+      "cpu": "200m",
+      "memory": "200Mi"
+    },
+    "default": {
+      "cpu": "200m",
+      "memory": "200Mi"
+    },
+    "defaultRequest": {
+      "cpu": "200m",
+      "memory": "200Mi"
+    },
+    "maxLimitRequestRatio": {
+      "cpu": "5",
+      "memory": "5"
+    }
+  }
+]
