@@ -1,0 +1,14 @@
+# Custom variables
+mbaas:
+  project_name: "{{ mbaas.project_name | default('rhmap-mbaas') }}"
+  schedule_to_key: "{{ mbaas.schedule_to_key | default('') }}"
+  schedule_to_value: "{{ mbaas.schedule_to_value | default('') }}"
+  mongo_pvc_size: "{{ mbaas.mongo_pvc_size | default('50Gi') }}"
+  mongo_config_name: "{{ mbaas.mongo_config_name | default('mongo-config') }}"
+
+monitoring:
+  smtp_server: "{{ monitoring.smtp_server | default('localhost') }}"
+  smtp_username: "{{ monitoring.smtp_username | default('username') }}"
+  smtp_password: "{{ monitoring.smtp_password | default('password') }}"
+  smtp_from_address: "{{ monitoring.smtp_from_address | default('nagios@example.com') }}"
+  rhmap_admin_email: "{{ monitoring.rhmap_admin_email | default('root@localhost') }}"

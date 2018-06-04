@@ -1,6 +1,6 @@
 # Custom variables
 core:
-  project_name: "{{ core.smtp_server | default('rhmap-core') }}"
+  project_name: "{{ core.project_name | default('rhmap-core') }}"
   schedule_to_key: "{{ core.schedule_to_key | default('') }}"
   schedule_to_value: "{{ core.schedule_to_value | default('') }}"
   mongo_pvc_size: "{{ core.mongo_pvc_size | default('50Gi') }}"

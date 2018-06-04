@@ -30,6 +30,13 @@
     mode: 0640
   become: yes
 
+- name: Setup ansible variables for RHMAP MBAAS
+  template:
+    src: deploy-mbaas-main.j2
+    dest: /opt/rhmap/{{ rhmap_version }}/rhmap-installer/roles/deploy-mbaas/defaults/main.yml
+    mode: 0640
+  become: yes
+
 - name: "Install python-docker-py via yum"
   yum:
     name: python-docker-py

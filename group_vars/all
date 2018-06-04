@@ -62,12 +62,19 @@ required_5_pv: 3
 required_1_pv: 2
 
 core:
-  project_name: "rhmap-core"
-  schedule_to_key: ""
-  schedule_to_value: ""
-  mongo_pvc_size: "50Gi"
+#  project_name: "rhmap-core"
+  schedule_to_key: "type"
+  schedule_to_value: "core"
+  mongo_pvc_size: "25Gi"
   mysql_pvc_size: "5Gi"
   scm_pvc_size: "25Gi"
+
+mbaas:
+#  mongo_config_name: "mongo-config"
+# project_name: "rhmap-mbaas"
+  schedule_to_key: "type"
+  schedule_to_value: "mbaas"
+  mongo_pvc_size: "25Gi"
 
 monitoring:
   smtp_server: "localhost"

@@ -40,3 +40,9 @@ mv /etc/yum.repos.d/open_ocp-workshop.repo /etc/yum.repos.d/open_ocp-workshop.re
 
 yum-config-manager --disable rhel-7-server-htb-rpms
 yum-config-manager --enable rhel-7-server-extras-rpms rhel-7-server-rh-common-rpms rhel-7-server-rpms rhel-7-server-optional-rpms rhel-7-fast-datapath-rpms rhel-7-server-ose-3.7-rpms
+
+
+/opt/rhmap/4.6/rhmap-installer/roles/deploy-mbaas/defaults/main.yml ==> look for schedule
+
+===> -e "strict_mode=false" --skip-tags "label"
+
