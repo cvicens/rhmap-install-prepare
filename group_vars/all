@@ -10,6 +10,16 @@ rhn_pool_ids:
 rhmap_version: "4.6"
 rhmap_repo: "rhel-7-server-rhmap-4.6-rpms"
 
+rhmap_mbaas_target_name: "mbaas-ocp"
+
+rhmap_environments:
+  - id: dev
+    label: Development
+  - id: test
+    label: Test
+  - id: prod
+    label: Production
+
 # Ansible related
 ansible_ssh_user: ec2-user
 ansible_sudo: true

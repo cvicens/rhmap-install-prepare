@@ -1,0 +1,63 @@
+---
+# This playbook contains common plays that will be run on all a master nodes
+
+# Install needed packages
+
+- name: Install nodejs & npm
+  yum:  
+    name: "nodejs"
+    state: latest
+  become: yes
+
+# Install fhc
+
+- name: Install fhc globally
+  shell: npm install -g fh-fhc
+  become: yes
+
+# Setup fhc
+
+- name: Get domain url
+  shell: oc get route rhmap --template "{% raw %}https://{{.spec.host}}{% endraw %}" -n {{ core.project_name }}
+  register: rhmap_domain_url
+  become: yes
+  
+- name: Target fhc domain
+  shell: fhc target {{ rhmap_domain_url.stdout }}
+
+- name: Get AppStudio admin username
+  shell: oc env dc/millicore -n {{ core.project_name }} --list | grep FH_ADMIN_USER_NAME
+  register: rhmap_admin_username
+  become: yes
+
+- name: Get AppStudio admin password
+  shell: oc env dc/millicore -n {{ core.project_name }} --list | grep FH_ADMIN_USER_PASSWORD
+  register: rhmap_admin_password
+  become: yes
+
+
+# Create MBaaS Target
+
+- name: Get OpenShift token
+  shell: oc whoami -t
+  register: ocp_token 
+
+- name: fhc Login
+  shell: fhc login {{rhmap_admin_username.stdout.split("=")[1]}} {{rhmap_admin_password.stdout.split("=")[1]}}
+
+- name: Get MBaaS URL
+  shell: oc get route mbaas -n {{ mbaas.project_name }} --template "{% raw %}{{.spec.host}}{% endraw %}"
+  register: mbaas_url
+
+- name: Get MBaaS Service Key
+  shell: oc env dc/fh-mbaas -n {{ mbaas.project_name }} --list | grep FHMBAAS_KEY
+  register: mbaas_service_key
+
+- name: Create MBaaS Target
+  shell: fhc admin mbaas create --id "{{ rhmap_mbaas_target_name }}" --url "https://{{openshift_master_cluster_hostname}}:{{openshift_master_api_port}}"  --servicekey {{mbaas_service_key.stdout.split("=")[1]}} --routerDNSUrl "*.{{apps_dns}}" --fhMbaasHost "https://{{mbaas_url.stdout}}" --type "openshift3" 
+
+# Create Environment
+
+- name: Create Environment
+  shell: fhc admin environments create --id "{{ item.id }}" --label "{{ item.label }}" --target "{{ rhmap_mbaas_target_name }}" --token "{{ocp_token.stdout}}"
+  whith_items: "{{ rhmap_environments }}"
