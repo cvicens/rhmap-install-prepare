@@ -29,7 +29,7 @@ ansible_ssh_private_key_file: /path/to/ssh/key/server1.pem
 target: enterprise
 
 # Cluster hostname
-cluster_hostname:
+cluster_hostname: apps.<CITY>.openshiftworkshop.com
 
 # Customer subdomain name
 domain_name: rhmap
@@ -40,7 +40,7 @@ oc_password:
 #oc_oauth_token:
 
 # The address and port of the OpenShift API server
-login_url: https://{{ cluster_hostname }}:8443
+login_url: https://master.<CITY>.openshiftworkshop.com
 
 # Low level vars
 skip_tls: true
@@ -81,7 +81,7 @@ core:
 
 mbaas:
 #  mongo_config_name: "mongo-config"
-# project_name: "rhmap-mbaas"
+  project_name: "rhmap-mbaas"
   schedule_to_key: "type"
   schedule_to_value: "mbaas"
   mongo_pvc_size: "25Gi"

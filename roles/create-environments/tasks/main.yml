@@ -57,10 +57,10 @@
   register: mbaas_service_key
 
 - name: Create MBaaS Target
-  shell: fhc admin mbaas create --id "{{ rhmap_mbaas_target_name }}" --url "https://{{openshift_master_cluster_hostname}}:{{openshift_master_api_port}}"  --servicekey {{mbaas_service_key.stdout.split("=")[1]}} --routerDNSUrl "*.{{apps_dns}}" --fhMbaasHost "https://{{mbaas_url.stdout}}" --type "openshift3" 
+  shell: fhc admin mbaas create --id "{{ rhmap_mbaas_target_name }}" --url "{{ login_url }}"  --servicekey {{ mbaas_service_key.stdout.split("=")[1] }} --routerDNSUrl "*.{{ cluster_hostname }}" --fhMbaasHost "https://{{ mbaas_url.stdout }}" --type "openshift3" 
 
 # Create Environment
 
 - name: Create Environment
-  shell: fhc admin environments create --id "{{ item.id }}" --label "{{ item.label }}" --target "{{ rhmap_mbaas_target_name }}" --token "{{ocp_token.stdout}}"
+  shell: fhc admin environments create --id "{{ item.id }}" --label "{{ item.label }}" --target "{{ rhmap_mbaas_target_name }}" --token "{{ ocp_token.stdout }}"
   with_items: "{{ rhmap_environments }}"
