@@ -72,7 +72,7 @@ required_5_pv: 3
 required_1_pv: 2
 
 core:
-#  project_name: "rhmap-core"
+  project_name: "rhmap-core"
   schedule_to_key: "type"
   schedule_to_value: "core"
   mongo_pvc_size: "25Gi"

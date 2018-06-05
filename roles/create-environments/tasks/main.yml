@@ -17,6 +17,9 @@
 
 # Setup fhc
 
+- debug:
+    msg: "core => {{ core }}"
+
 - name: Get domain url
   shell: oc get route rhmap --template "{% raw %}https://{{.spec.host}}{% endraw %}" -n {{ core.project_name }}
   register: rhmap_domain_url
@@ -60,4 +63,4 @@
 
 - name: Create Environment
   shell: fhc admin environments create --id "{{ item.id }}" --label "{{ item.label }}" --target "{{ rhmap_mbaas_target_name }}" --token "{{ocp_token.stdout}}"
-  whith_items: "{{ rhmap_environments }}"
+  with_items: "{{ rhmap_environments }}"

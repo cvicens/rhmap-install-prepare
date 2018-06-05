@@ -36,12 +36,19 @@
   roles:
     - check-pvs
 
-- name: deploy RHMAP (bastion node)
-  hosts: bastion
+- name: deploy RHMAP (master[0] node)
+  hosts: master[0]
   remote_user: root
 
   roles:
     - deploy-core
     - deploy-mbaas
+
+- name: Create RHMAP environments, dev, test, etc. (bastion node)
+  hosts: master[0]
+  remote_user: root
+
+  roles:
+    - create-environments
 
 
