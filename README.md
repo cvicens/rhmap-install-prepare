@@ -14,7 +14,7 @@ vi /etc/exports.d/ocp-workshop-oslo2.exports
 Add:
 
 ```
-/srv/nfs/rhm *(rw,root_squash,no_wdelay,sync)
+/srv/nfs/rhm *(rw,root_squash)
 ```
 
 # Restart NFS

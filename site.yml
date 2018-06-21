@@ -29,15 +29,15 @@
   roles:
     - prepare-mbaas-nodes
 
-- name: check PVs infrastructure (master node)
-  hosts: master[0]
+- name: check PVs infrastructure (bastion node)
+  hosts: bastion
   remote_user: root
 
   roles:
     - check-pvs
 
-- name: deploy RHMAP (master[0] node)
-  hosts: master[0]
+- name: deploy RHMAP (bastion node)
+  hosts: bastion
   remote_user: root
 
   roles:
@@ -45,7 +45,7 @@
     - deploy-mbaas
 
 - name: Create RHMAP environments, dev, test, etc. (bastion node)
-  hosts: master[0]
+  hosts: bastion
   remote_user: root
 
   roles:
