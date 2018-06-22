@@ -1,0 +1,29 @@
+---
+# This playbook contains common plays that will be run on the bastion node.
+
+# Seed RHM docker images to nodes
+- block:
+  - name: Seed rhmap core docker images to nodes
+    shell: ANSIBLE_ROLES_PATH=/opt/rhmap/{{ rhmap_version }}/rhmap-installer/roles/ ansible-playbook -i /etc/ansible/hosts_rhmap /opt/rhmap/{{ rhmap_version }}/rhmap-installer/playbooks/seed-images.yml -e "project_type=core" -e "rhmap_version='{{ rhmap_version }}'" > /tmp/rhmap-seed-core.out 2>&1
+    async: 5400
+    poll: 30
+    register: seed_core
+    become: yes
+
+  - fail: msg="Failed to seed core images to nodes. Check log output /tmp/rhmap-seed-core.out"
+    when: seed_core.rc is undefined or seed_core.rc != 0
+
+- debug: var=seed_core
+
+- block:
+  - name: Seed rhmap mbaas docker images to nodes
+    shell: ANSIBLE_ROLES_PATH=/opt/rhmap/{{ rhmap_version }}/rhmap-installer/roles/ ansible-playbook -i /etc/ansible/hosts_rhmap /opt/rhmap/{{ rhmap_version }}/rhmap-installer/playbooks/seed-images.yml -e "project_type=mbaas" -e "rhmap_version='{{ rhmap_version }}'" > /tmp/rhmap-seed-mbaas 2>&1
+    async: 5400
+    poll: 30
+    register: seed_mbaas
+    become: yes
+
+  - fail: msg="Failed to seed mbaas images to nodes. Check log output /tmp/rhmap-seed-mbaas.out"
+    when: seed_mbaas.rc is undefined or seed_mbaas.rc != 0
+
+- debug: var=seed_mbaas
