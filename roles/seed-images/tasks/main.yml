@@ -17,7 +17,7 @@
 
 - block:
   - name: Seed rhmap mbaas docker images to nodes
-    shell: ANSIBLE_ROLES_PATH=/opt/rhmap/{{ rhmap_version }}/rhmap-installer/roles/ ansible-playbook -i /etc/ansible/hosts_rhmap /opt/rhmap/{{ rhmap_version }}/rhmap-installer/playbooks/seed-images.yml -e "project_type=mbaas" -e "rhmap_version='{{ rhmap_version }}'" > /tmp/rhmap-seed-mbaas 2>&1
+    shell: ANSIBLE_ROLES_PATH=/opt/rhmap/{{ rhmap_version }}/rhmap-installer/roles/ ansible-playbook -i /etc/ansible/hosts_rhmap /opt/rhmap/{{ rhmap_version }}/rhmap-installer/playbooks/seed-images.yml -e "project_type=mbaas" -e "rhmap_version='{{ rhmap_version }}'" > /tmp/rhmap-seed-mbaas.out 2>&1
     async: 5400
     poll: 30
     register: seed_mbaas

@@ -16,7 +16,7 @@ echo "${NFS_SERVER} ${PV_SIZE} ${PV_QUANTITY}"
 for (( i=1; i<=${PV_QUANTITY}; i++ ))
 do
 PV_NAME="rhm-pv-${PV_SIZE}-$i"
-ansible -i hosts nfs -u ec2-user --become -m file -a "dest=${NFS_DIR}/${PV_NAME} mode=777 owner=nfsnobody group=nfsnobody state=directory"
+ansible -i hosts nfs -u ${SSH_USER} --become -m file -a "dest=${NFS_DIR}/${PV_NAME} mode=777 owner=nfsnobody group=nfsnobody state=directory"
 cat << EOF > ./dyn1-pv-create.yaml
 apiVersion: v1
 kind: PersistentVolume
