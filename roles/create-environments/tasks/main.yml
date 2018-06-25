@@ -18,7 +18,7 @@
 # OCP login
 
 - name: OCP login with user/pass
-  shell: oc login {{ login_url }} --username={{ oc_user }} --password={{ oc_password }}
+  shell: oc login {{ login_url }} --username={{ oc_user }} --password={{ oc_password }} --insecure-skip-tls-verify
   register: login_out
   become: yes
   when: oc_oauth_token is not defined
@@ -29,7 +29,7 @@
   when: oc_oauth_token is not defined
 
 - name: OCP login with token
-  shell: oc login {{ login_url }} --token={{ oc_oauth_token }}
+  shell: oc login {{ login_url }} --token={{ oc_oauth_token }} --insecure-skip-tls-verify
   register: login_out
   become: yes
   when: oc_oauth_token is defined
