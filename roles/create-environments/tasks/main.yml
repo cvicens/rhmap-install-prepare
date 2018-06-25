@@ -15,6 +15,25 @@
   shell: npm install -g fh-fhc
   become: yes
 
+# OCP login
+
+- name: OCP login with user/pass
+  shell: oc login {{ login_url }} --username={{ oc_user }} --password={{ oc_password }}
+  register: login_out
+  become: yes
+  when: oc_oauth_token is not defined
+
+- name: Get OpenShift token
+  shell: oc whoami -t
+  register: ocp_whoami_token
+  when: oc_oauth_token is not defined
+
+- name: OCP login with token
+  shell: oc login {{ login_url }} --token={{ oc_oauth_token }}
+  register: login_out
+  become: yes
+  when: oc_oauth_token is defined
+
 # Setup fhc
 
 - debug:
@@ -41,10 +60,6 @@
 
 # Create MBaaS Target
 
-- name: Get OpenShift token
-  shell: oc whoami -t
-  register: ocp_token 
-
 - name: fhc Login
   shell: fhc login {{rhmap_admin_username.stdout.split("=")[1]}} {{rhmap_admin_password.stdout.split("=")[1]}}
 
@@ -62,5 +77,5 @@
 # Create Environment
 
 - name: Create Environment
-  shell: fhc admin environments create --id "{{ item.id }}" --label "{{ item.label }}" --target "{{ rhmap_mbaas_target_name }}" --token "{{ ocp_token.stdout }}"
+  shell: fhc admin environments create --id "{{ item.id }}" --label "{{ item.label }}" --target "{{ rhmap_mbaas_target_name }}" --token "{{ ocp_oauth_token | ocp_token.stdout }}"
   with_items: "{{ rhmap_environments }}"
