@@ -23,17 +23,19 @@
   become: yes
   when: oc_oauth_token is not defined
 
-- name: Get OpenShift token
-  shell: oc whoami -t
-  register: ocp_whoami_token
-  when: oc_oauth_token is not defined
-
 - name: OCP login with token
   shell: oc login {{ login_url }} --token={{ oc_oauth_token }} --insecure-skip-tls-verify
   register: login_out
   become: yes
   when: oc_oauth_token is defined
 
+- name: Get OpenShift token
+  shell: oc whoami -t
+  register: ocp_whoami_token
+
+- debug:
+    msg: "ocp_whoami_token => {{ ocp_whoami_token.stdout }}"
+    
 # Setup fhc
 
 - debug:
@@ -57,7 +59,6 @@
   register: rhmap_admin_password
   become: yes
 
-
 # Create MBaaS Target
 
 - name: fhc Login
@@ -73,9 +74,11 @@
 
 - name: Create MBaaS Target
   shell: fhc admin mbaas create --id "{{ rhmap_mbaas_target_name }}" --url "{{ login_url }}"  --servicekey {{ mbaas_service_key.stdout.split("=")[1] }} --routerDNSUrl "*.{{ cluster_hostname }}" --fhMbaasHost "https://{{ mbaas_url.stdout }}" --type "openshift3" 
+  register: mbaas_target_result
+  failed_when: "'Error - not 2xx status code. (400)' in mbaas_target_result.stderr"
 
 # Create Environment
 
 - name: Create Environment
-  shell: fhc admin environments create --id "{{ item.id }}" --label "{{ item.label }}" --target "{{ rhmap_mbaas_target_name }}" --token "{{ ocp_oauth_token | ocp_token.stdout }}"
+  shell: fhc admin environments create --id "{{ item.id }}" --label "{{ item.label }}" --target "{{ rhmap_mbaas_target_name }}" --token "{{ ocp_whoami_token.stdout }}"
   with_items: "{{ rhmap_environments }}"

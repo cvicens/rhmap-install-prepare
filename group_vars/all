@@ -103,4 +103,4 @@ frontend:
   email_replyto: "noreply@localhost"
   git_external_protocol: "http"
   builder_android_service_host: "https://farm.eu.redhatmobile.com"
-  builder_iphone_service_host: "https://farm.eu.redhatmobile.com"
+  builder_ios_service_host: "https://farm.eu.redhatmobile.com"
