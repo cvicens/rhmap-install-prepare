@@ -36,6 +36,7 @@
     content: |
       address=/{{ login_hostname }}/hostvars['master'][0]['ansible_default_ipv4']['address']
       address=/.{{ cluster_hostname }}/hostvars['infra'][0]['ansible_default_ipv4']['address']
+  become: yes
 
 # Enable and start dnsmasq.service
 - name: Enable and Start dnsmasq service, and not touch the running state
