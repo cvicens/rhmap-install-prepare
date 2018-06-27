@@ -8,7 +8,7 @@
     async: 5400
     poll: 30
     register: seed_core
-    become: yes
+    #become: yes
 
   - fail: msg="Failed to seed core images to nodes. Check log output /tmp/rhmap-seed-core.out"
     when: seed_core.rc is undefined or seed_core.rc != 0
@@ -21,7 +21,7 @@
     async: 5400
     poll: 30
     register: seed_mbaas
-    become: yes
+    #become: yes
 
   - fail: msg="Failed to seed mbaas images to nodes. Check log output /tmp/rhmap-seed-mbaas.out"
     when: seed_mbaas.rc is undefined or seed_mbaas.rc != 0
