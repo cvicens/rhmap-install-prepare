@@ -37,16 +37,46 @@
       address=/{{ login_hostname }}/hostvars['master'][0]['ansible_default_ipv4']['address']
       address=/.{{ cluster_hostname }}/hostvars['infra'][0]['ansible_default_ipv4']['address']
 
-# Enable dnsmasq.service
-- name: Enable service dnsmasq, and not touch the running state
+# Enable and start dnsmasq.service
+- name: Enable and Start dnsmasq service, and not touch the running state
   service:
     name: dnsmasq
     enabled: yes
+    state: restarted
 
-- name: Start service dnsmasq, and not touch the running state
+# Create /etc/exports.d/rhm.exports
+- name: Create /etc/exports.d/rhm.exports
+  file:
+    path: /etc/exports.d/rhm.exports
+    owner: root
+    group: root
+    mode: 0644
+    state: touch
+  become: yes
+
+# Create /srv/nfs/rhm
+- name: Create /srv/nfs/rhm
+  file:
+    path: /srv/nfs/rhm
+    owner: nfsnobody
+    group: nfsnobody
+    mode: 0644
+    state: directory
+  become: yes
+
+# Add NFS export definition for RHM
+- name: Add definition for NFS export for RHM
+  blockinfile:
+    path: /etc/exports.d/rhm.exports
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    content: |
+      /srv/nfs/rhm *(rw,root_squash)
+
+# Restart NFS service
+- name: Restart nfs service
   service:
-    name: dnsmasq
-    enabled: started
+    name: nfs
+    state: restarted
 
 # Enable RHM repo & install templates
 - name: Enable Red Hat Mobile repos

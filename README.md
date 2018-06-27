@@ -9,7 +9,7 @@ chmod -R uga+rwx /srv/nfs/rhm
 
 
 # Define NFS export
-vi /etc/exports.d/ocp-workshop-oslo2.exports
+vi /etc/exports.d/rhm.exports
 
 Add:
 
