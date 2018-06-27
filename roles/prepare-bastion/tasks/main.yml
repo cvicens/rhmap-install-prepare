@@ -21,7 +21,7 @@
 # Create /etc/dnsmasq.conf
 - name: Create /etc/dnsmasq.conf
   file:
-    path: /etc/dnsmasq.conf
+    path: /etc/dnsmasq.conf 
     owner: root
     group: root
     mode: 0644
