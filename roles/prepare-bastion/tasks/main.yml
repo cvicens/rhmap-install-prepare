@@ -44,6 +44,7 @@
     name: dnsmasq
     enabled: yes
     state: restarted
+  become: yes
 
 # Create /etc/exports.d/rhm.exports
 - name: Create /etc/exports.d/rhm.exports
@@ -78,6 +79,7 @@
   service:
     name: nfs
     state: restarted
+  become: yes
 
 # Enable RHM repo & install templates
 - name: Enable Red Hat Mobile repos
