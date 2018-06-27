@@ -46,6 +46,19 @@
     state: restarted
   become: yes
 
+- name: configure nfs ports 111,2049 to iptables
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: "{{ item }}"
+    destination_port: "53"
+    jump: ACCEPT
+    comment: "Accept trafic to {{item}}"
+    with_items:
+    - udp
+    - tcp
+  become: yes
+
 # Create /etc/exports.d/rhm.exports
 - name: Create /etc/exports.d/rhm.exports
   file:
