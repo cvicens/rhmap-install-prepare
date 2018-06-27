@@ -13,5 +13,5 @@
   with_items: "{{ pvs }}"
 
 # Example from Ansible Playbooks
-- script: /some/local/create-pv.sh hostvars['nfs'][0] {{ item.name }} {{ item.size }}
+- script: ./create-pv.sh hostvars['nfs'][0] {{ item.name }} {{ item.size }}
   with_items: "{{ pvs }}"
