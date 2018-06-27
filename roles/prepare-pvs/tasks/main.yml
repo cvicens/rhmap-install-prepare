@@ -12,6 +12,22 @@
   become: yes
   with_items: "{{ pvs }}"
 
-# Example from Ansible Playbooks
-- script: ./create-pv.sh hostvars['nfs'][0] {{ item.name }} {{ item.size }}
+# Create PVs
+- name: OCP login with user/pass
+  shell: oc login {{ login_url }} --username={{ oc_user }} --password={{ oc_password }} --insecure-skip-tls-verify
+  register: login_out
+  become: yes
+  when: oc_oauth_token is not defined
+
+- name: OCP login with token
+  shell: oc login {{ login_url }} --token={{ oc_oauth_token }} --insecure-skip-tls-verify
+  register: login_out
+  become: yes
+  when: oc_oauth_token is defined
+
+- name: Get OpenShift token
+  shell: oc whoami -t
+  register: ocp_whoami_token
+
+- script: ./create-pv.sh {{ login_url }} {{ ocp_whoami_token }} hostvars['nfs'][0] {{ item.name }} {{ item.size }}
   with_items: "{{ pvs }}"
