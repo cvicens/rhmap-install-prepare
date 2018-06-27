@@ -44,7 +44,7 @@ oc_oauth_token:
 
 # The address and port of the OpenShift API server
 login_hostname: master.{{ cluster_domain }}
-login_url: https://{{ login_hostname }}
+login_url: https://{{ login_hostname }}:8443
 
 # Low level vars
 skip_tls: true
