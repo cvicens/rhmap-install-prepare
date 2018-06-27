@@ -73,7 +73,8 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
     content: |
       /srv/nfs/rhm *(rw,root_squash)
-
+  become: yes
+  
 # Restart NFS service
 - name: Restart nfs service
   service:
