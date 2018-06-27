@@ -76,16 +76,25 @@ required_5_pv: 3
 required_1_pv: 2
 
 pvs:
-- base_name: rhm-pv-25
+- name: rhm-pv-25-1
   size: 25
-  quantity: {{ required_25_pv }}
-- base_name: rhm-pv-5
+- name: rhm-pv-25-2
+  size: 25
+- name: rhm-pv-25-3
+  size: 25
+- name: rhm-pv-5-1
   size: 5
-  quantity: {{ required_5_pv }}
-- base_name: rhm-pv-1
+- name: rhm-pv-5-2
+  size: 5
+- name: rhm-pv-5-3
+  size: 5
+- name: rhm-pv-1-1
   size: 1
-  quantity: {{ required_1_pv }}
-  
+- name: rhm-pv-1-2
+  size: 1
+- name: rhm-pv-1-3
+  size: 1
+
 core:
   project_name: "rhmap-core"
   schedule_to_key: "type"
