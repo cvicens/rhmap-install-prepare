@@ -15,6 +15,13 @@
   roles:
     - prepare-bastion
 
+- name: prepare infrastructure PVs (bastion node)
+  hosts: bastion
+  remote_user: root
+
+  roles:
+    - prepare-pvs
+
 - name: seed images core and mbaas (bastion node)
   hosts: bastion
   remote_user: root
