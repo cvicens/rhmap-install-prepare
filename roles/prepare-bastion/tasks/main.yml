@@ -46,7 +46,7 @@
     state: restarted
   become: yes
 
-- name: configure nfs ports 111,2049 to iptables
+- name: configure dnsmasq ports 53 to iptables
   iptables:
     action: insert
     chain: INPUT
