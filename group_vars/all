@@ -8,7 +8,7 @@ rhn_pool_ids:
 - DUMMY_POOL_ID
 
 rhmap_version: "4.6"
-rhmap_repo: "rhel-7-server-rhmap-4.6-rpms"
+rhmap_repo: "rhel-7-server-rhmap-{{ rhmap_version }}-rpms"
 
 rhmap_mbaas_target_name: "mbaas-ocp"
 
@@ -21,26 +21,30 @@ rhmap_environments:
     label: Production
 
 # Ansible related
-ansible_ssh_user: ec2-user
+ansible_ssh_user: cloud-user
 ansible_sudo: true
 ansible_ssh_private_key_file: /path/to/ssh/key/server1.pem
 
 # Valid targets enterprise or dedicated
 target: enterprise
 
+# Apps domain name
+cluster_domain: 148.251.77.169.nip.io
+
 # Cluster hostname
-cluster_hostname: apps.<CITY>.openshiftworkshop.com
+cluster_hostname: apps.{{ cluster_domain }}
 
 # Customer subdomain name
 domain_name: rhmap
 
 # OpenShift Credentials
-oc_user:
-oc_password:
-#oc_oauth_token:
+#oc_user:
+#oc_password:
+oc_oauth_token:
 
 # The address and port of the OpenShift API server
-login_url: https://master.<CITY>.openshiftworkshop.com
+login_hostname: master.{{ cluster_domain }}
+login_url: https://{{ login_hostname }}
 
 # Low level vars
 skip_tls: true

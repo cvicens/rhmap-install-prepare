@@ -1,6 +1,53 @@
 ---
 # This playbook contains common plays that will be run on the bastion node.
 
+# Install tools to allow invoking external url from bastion...
+- name: Install dnsmasq to return apps.<opensshift> like entries
+  yum:  
+    name: "dnsmasq"
+    state: latest
+  environment:
+    http_proxy: "{{ proxy_url | default('') }}"
+    https_proxy: "{{ proxy_url | default('') }}"
+  become: yes
+
+# Delete /etc/dnsmasq.conf to start clean
+- name: Delete /etc/dnsmasq.conf
+  file:
+    path: /etc/dnsmasq.conf
+    state: absent
+  become: yes
+
+# Create /etc/dnsmasq.conf
+- name: Create /etc/dnsmasq.conf
+  file:
+    path: /etc/dnsmasq.conf
+    owner: root
+    group: root
+    mode: 0644
+    state: touch
+  become: yes
+
+# Add rules to /etc/dnsmasq.conf
+- name: Add rules to return internal IPs for master and apps urls
+  blockinfile:
+    path: /etc/dnsmasq.conf
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    content: |
+      address=/{{ login_hostname }}/hostvars['master'][0]['ansible_default_ipv4']['address']
+      address=/.{{ cluster_hostname }}/hostvars['infra'][0]['ansible_default_ipv4']['address']
+
+# Enable dnsmasq.service
+- name: Enable service dnsmasq, and not touch the running state
+  service:
+    name: dnsmasq
+    enabled: yes
+
+- name: Start service dnsmasq, and not touch the running state
+  service:
+    name: dnsmasq
+    enabled: started
+
 # Enable RHM repo & install templates
 - name: Enable Red Hat Mobile repos
   shell: subscription-manager repos --enable="{{ rhmap_repo }}"
