@@ -1,6 +1,11 @@
 ---
 # This playbook deploys RHMAP
 
+# This playbook deploys RHMAP
+- hosts: all
+  name: Gather facts from all hosts
+  tasks: [ ]
+
 - name: prepare infrastructure (all nodes)
   hosts: all
   remote_user: root
