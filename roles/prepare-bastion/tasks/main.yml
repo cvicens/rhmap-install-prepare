@@ -70,9 +70,9 @@
   become: yes
 
 # Create /srv/nfs/rhm
-- name: Create /srv/nfs/rhm
+- name: Create {{ rhm_nfs_dir }}
   file:
-    path: /srv/nfs/rhm
+    path: "{{ rhm_nfs_dir }}"
     owner: nfsnobody
     group: nfsnobody
     mode: 0644
@@ -85,7 +85,7 @@
     path: /etc/exports.d/rhm.exports
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
     content: |
-      /srv/nfs/rhm *(rw,root_squash)
+      {{ rhm_nfs_dir }} *(rw,root_squash)
   become: yes
 
 # Restart NFS service

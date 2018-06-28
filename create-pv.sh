@@ -1,15 +1,16 @@
 #!/bin/bash
 
-if [ "$#" -ne 5 ]; then
-    echo "$0 <LOGIN_URL> <OC_TOKEN> <NFS_SERVER> <PV_NAME> <PV_SIZE>"
+if [ "$#" -ne 6 ]; then
+    echo "$0 <LOGIN_URL> <OC_TOKEN> <NFS_SERVER> <NFS_DIR> <PV_NAME> <PV_SIZE>"
     exit 0
 fi
 
 LOGIN_URL=$1
 OC_TOKEN=$2
 NFS_SERVER=$3
-PV_NAME=$4
-PV_SIZE=$5
+NFS_DIR=$4
+PV_NAME=$5
+PV_SIZE=$6
 
 cat << EOF > ./pv-create.yaml
 apiVersion: v1
