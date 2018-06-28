@@ -29,5 +29,3 @@ spec:
 EOF
 oc login ${LOGIN_URL} --token=${OC_TOKEN} --insecure-skip-tls-verify
 oc create -f ./pv-create.yaml
-
-done
