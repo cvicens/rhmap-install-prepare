@@ -35,5 +35,5 @@
 
 - script: ./create-pv.sh {{ login_url }} {{ ocp_whoami_token.stdout }} {{ hostvars[groups['nfs'][0]]['inventory_hostname'] }} {{ item.name }} {{ item.size }}
   register: script_result
-  failed_when: "'AlreadyExists' not in script_result.stderr"
+  failed_when: "script_result.rc != 0 and 'AlreadyExists' not in script_result.stderr"
   with_items: "{{ pvs }}"
