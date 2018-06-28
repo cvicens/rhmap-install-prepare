@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$#" -ne 3 ]; then
+if [ "$#" -ne 5 ]; then
     echo "$0 <LOGIN_URL> <OC_TOKEN> <NFS_SERVER> <PV_NAME> <PV_SIZE>"
     exit 0
 fi
