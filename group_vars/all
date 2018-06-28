@@ -71,7 +71,7 @@ gluster_storage: false
 # Custom variables
 
 # Required PVs
-rhm_nfs_dir=/srv/nfs/rhm
+rhm_nfs_dir: "/srv/nfs/rhm"
 
 required_25_pv: 3
 required_5_pv: 3
