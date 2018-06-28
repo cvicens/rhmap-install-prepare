@@ -29,19 +29,12 @@
   roles:
     - seed-images
 
-- name: prepare core nodes (core node)
+- name: prepare rhm nodes
   hosts: bastion
   remote_user: root
 
   roles:
-    - prepare-core-nodes
-
-- name: prepare mbaas nodes (core mbaas)
-  hosts: bastion
-  remote_user: root
-
-  roles:
-    - prepare-mbaas-nodes
+    - prepare-rhm-nodes
 
 - name: check PVs infrastructure (bastion node)
   hosts: bastion

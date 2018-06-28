@@ -1,0 +1,45 @@
+---
+# This playbook contains common plays that will be run on the bastion node.
+
+# Create /srv/nfs/rhm/${PV_NAME}
+- name: Create PVs
+  file:
+    path: /srv/nfs/rhm/{{ item.name }}
+    owner: nfsnobody
+    group: nfsnobody
+    mode: 0644
+    state: directory
+  become: yes
+  with_items: "{{ pvs }}"
+
+# Get OCP token
+- name: OCP login with user/pass
+  shell: oc login {{ login_url }} --username={{ oc_user }} --password={{ oc_password }} --insecure-skip-tls-verify
+  register: login_out
+  become: yes
+  when: oc_oauth_token is not defined
+
+- name: OCP login with token
+  shell: oc login {{ login_url }} --token={{ oc_oauth_token }} --insecure-skip-tls-verify
+  register: login_out
+  become: yes
+  when: oc_oauth_token is defined
+
+- name: Get OpenShift token
+  shell: oc whoami -t
+  register: ocp_whoami_token
+
+# Label RHMAP nodes
+- name: "Label mbaas nodes"
+  shell: oc label node {{ item }} type=mbaas
+  register: result
+  failed_when: ( result.stdout.find("error") == 1 )
+  with_items: "{{ groups['mbaas'] }}"
+  become: yes
+
+- name: "Label mbaas nodes"
+  shell: oc label node {{ item }} type=mbaas
+  register: result
+  failed_when: ( result.stdout.find("error") == 1 )
+  with_items: "{{ groups['mbaas'] }}"
+  become: yes
