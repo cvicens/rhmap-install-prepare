@@ -31,7 +31,7 @@
 
 - name: Debug info before ./create-pv.sh
   debug:
-    msg: "./create-pv.sh {{ login_url }} {{ ocp_whoami_token.stdout }} {{ hostvars[groups['nfs'][0]] }} <item.name> <item.size>"
+    msg: "./create-pv.sh {{ login_url }} {{ ocp_whoami_token.stdout }} {{ hostvars[groups['nfs'][0]]['inventory_hostname'] }} <item.name> <item.size>"
 
-- script: ./create-pv.sh {{ login_url }} {{ ocp_whoami_token.stdout }} {{ hostvars[groups['nfs'][0]] }} {{ item.name }} {{ item.size }}
+- script: ./create-pv.sh {{ login_url }} {{ ocp_whoami_token.stdout }} {{ hostvars[groups['nfs'][0]]['inventory_hostname'] }} {{ item.name }} {{ item.size }}
   with_items: "{{ pvs }}"
