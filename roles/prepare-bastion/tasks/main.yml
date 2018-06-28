@@ -28,13 +28,11 @@
     state: touch
   become: yes
 
-- name: Debug /etc/dnsmasq.conf 1
+- name: Debug /etc/dnsmasq.conf
   debug:
-    msg: "address=/{{ login_hostname }}/{{ hostvars[groups['master'][0]]['ansible_default_ipv4']['address'] }}"
-
-- name: Debug /etc/dnsmasq.conf 2
-  debug:
-    msg: "address=/.{{ cluster_hostname }}/{{ hostvars[groups['infra'][0]]['ansible_default_ipv4']['address'] }}"
+    msg: |
+      "address=/{{ login_hostname }}/{{ hostvars[groups['master'][0]]['ansible_default_ipv4']['address'] }}"
+      "address=/.{{ cluster_hostname }}/{{ hostvars[groups['infra'][0]]['ansible_default_ipv4']['address'] }}"
 
 # Add rules to /etc/dnsmasq.conf
 - name: Add rules to return internal IPs for master and apps urls
