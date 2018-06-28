@@ -29,5 +29,9 @@
   shell: oc whoami -t
   register: ocp_whoami_token
 
+- name: Debug info before ./create-pv.sh
+  debug:
+    msg: "./create-pv.sh {{ login_url }} {{ ocp_whoami_token }} hostvars['nfs'][0] <item.name> <item.size>"
+
 - script: ./create-pv.sh {{ login_url }} {{ ocp_whoami_token }} hostvars['nfs'][0] {{ item.name }} {{ item.size }}
   with_items: "{{ pvs }}"
