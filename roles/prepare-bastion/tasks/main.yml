@@ -38,7 +38,7 @@
     msg: |
       "address=/{{ login_hostname }}/{{ hostvars[groups['master'][0]]['ansible_default_ipv4']['address'] }}"
       "address=/.{{ cluster_hostname }}/{{ hostvars[groups['infra'][0]]['ansible_default_ipv4']['address'] }}"
-      "address=/{{ cluster_domain }}/{{ gateway }}"
+      "address=/{{ cluster_domain }}/{{ gateway.stdout }}"
 
 # Add rules to /etc/dnsmasq.conf
 - name: Add rules to return internal IPs for master and apps urls
@@ -48,6 +48,7 @@
     content: |
       address=/{{ login_hostname }}/{{ hostvars[groups['master'][0]]['ansible_default_ipv4']['address'] }}
       address=/.{{ cluster_hostname }}/{{ hostvars[groups['infra'][0]]['ansible_default_ipv4']['address'] }}
+      address=/{{ cluster_domain }}/{{ gateway.stdout }}
   become: yes
 
 # Enable and start dnsmasq.service
