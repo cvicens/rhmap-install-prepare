@@ -95,7 +95,6 @@
 
 # Add NFS export definition for RHM
 
-# Delete /etc/dnsmasq.conf to start clean
 - name: Delete /etc/exports.d/rhm.exports
   file:
     path: /etc/exports.d/rhm.exports
@@ -114,6 +113,7 @@
     state: present
     line: "{{ rhm_nfs_dir }}/{{ item.name }} *(rw,root_squash)"
   with_items: "{{ pvs }}"
+  become: yes
 
 # Restart NFS service
 - name: Restart nfs service
