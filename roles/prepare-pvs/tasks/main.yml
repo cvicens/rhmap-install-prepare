@@ -1,17 +1,6 @@
 ---
 # This playbook contains common plays that will be run on the bastion node.
 
-# Create /srv/nfs/rhm/${PV_NAME}
-- name: Create PVs
-  file:
-    path: "{{ rhm_nfs_dir }}/{{ item.name }}"
-    owner: nfsnobody
-    group: nfsnobody
-    mode: 0644
-    state: directory
-  become: yes
-  with_items: "{{ pvs }}"
-
 # Create PVs
 - name: OCP login with user/pass
   shell: oc login {{ login_url }} --username={{ oc_user }} --password={{ oc_password }} --insecure-skip-tls-verify
