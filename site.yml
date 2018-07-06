@@ -20,6 +20,13 @@
   roles:
     - prepare-bastion
 
+- name: prepare nfs (nfs node)
+  hosts: nfs
+  remote_user: root
+
+  roles:
+    - prepare-nfs
+
 - name: prepare infrastructure PVs (bastion node)
   hosts: bastion
   remote_user: root

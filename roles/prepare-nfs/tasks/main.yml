@@ -1,0 +1,52 @@
+---
+# This playbook contains common plays that will be run on the nfs node.
+
+# Create /etc/exports.d/rhm.exports
+- name: Create /etc/exports.d/rhm.exports
+  file:
+    path: /etc/exports.d/rhm.exports
+    owner: root
+    group: root
+    mode: 0644
+    state: touch
+  become: yes
+
+# Create PVs directories /srv/nfs/rhm/${PV_NAME}
+- name: Create PVs directories
+  file:
+    path: "{{ rhm_nfs_dir }}/{{ item.name }}"
+    owner: nfsnobody
+    group: nfsnobody
+    mode: 0777
+    state: directory
+  become: yes
+  with_items: "{{ pvs }}"
+
+# Add NFS export definition for RHM
+
+- name: Delete /etc/exports.d/rhm.exports
+  file:
+    path: /etc/exports.d/rhm.exports
+    state: absent
+  become: yes
+
+- name: Create /etc/exports.d/rhm.exports
+  file:
+    path: /etc/exports.d/rhm.exports
+    state: touch
+  become: yes
+
+- name: Add definition for NFS export for RHM
+  lineinfile:
+    dest: /etc/exports.d/rhm.exports
+    state: present
+    line: "{{ rhm_nfs_dir }}/{{ item.name }} *(rw,root_squash)"
+  with_items: "{{ pvs }}"
+  become: yes
+
+# Restart NFS service
+- name: Restart nfs service
+  service:
+    name: nfs
+    state: restarted
+  become: yes
